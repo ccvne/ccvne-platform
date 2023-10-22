@@ -42,8 +42,9 @@ const CreatePage = () => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      const response = await axios.post("/api/course", values);
-      router.push(`teacher/courses/${response.data.id}`)
+      const response = await axios.post("/api/courses", values);
+      router.push(`courses/${response.data.id}`);
+      toast.success("Course Created");
     } catch {
       toast.error("Something Went Wrong");
     }
@@ -88,9 +89,9 @@ const CreatePage = () => {
                   Cancel
                 </Button>
               </Link>
-                <Button type="submit" disabled={!isValid || isSubmitting}>
-                  Continue
-                </Button>
+              <Button type="submit" disabled={!isValid || isSubmitting}>
+                Continue
+              </Button>
             </div>
           </form>
         </Form>
