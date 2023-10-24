@@ -8,6 +8,7 @@ import { Pencil } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
+import { Course } from "@prisma/client";
 
 import {
   Form,
@@ -21,9 +22,7 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
 interface DescriptionFormProps {
-  initialData: {
-    description: string;
-  };
+  initialData: Course
   courseId: string;
 }
 
@@ -33,7 +32,10 @@ const formSchema = z.object({
   }),
 });
 
-export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps) => {
+export const DescriptionForm = ({
+  initialData,
+  courseId,
+}: DescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -42,19 +44,21 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: initialData,
+    defaultValues: {
+      description: initialData?.description || ""
+    }
   });
 
   const { isSubmitting, isValid } = form.formState;
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-        await axios.patch(`/api/courses/${courseId}`, values)
-        toast.success("Course Updated Successfully")
-        toggleEdit();
-        router.refresh();
+      await axios.patch(`/api/courses/${courseId}`, values);
+      toast.success("Course Updated Successfully");
+      toggleEdit();
+      router.refresh();
     } catch {
-        toast.error("Something Went Wrong")
+      toast.error("Something Went Wrong");
     }
   };
 
@@ -73,9 +77,16 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
           )}
         </Button>
       </div>
-      {!isEditing && <p className={cn(
-        "text-sm mt-2", !initialData.description && "text-slate-500 italic"
-      )}>{initialData.description || "No description"}</p>}
+      {!isEditing && (
+        <p
+          className={cn(
+            "text-sm mt-2",
+            !initialData.description && "text-slate-500 italic"
+          )}
+        >
+          {initialData.description || "No description"}
+        </p>
+      )}
       {isEditing && (
         <Form {...form}>
           <form
@@ -99,12 +110,9 @@ export const DescriptionForm = ({ initialData, courseId }: DescriptionFormProps)
               )}
             />
             <div className="flex items-center gap-x-2">
-                <Button
-                    disabled={!isValid || isSubmitting}
-                    type="submit"
-                >
-                    Save
-                </Button>
+              <Button disabled={!isValid || isSubmitting} type="submit">
+                Save
+              </Button>
             </div>
           </form>
         </Form>
