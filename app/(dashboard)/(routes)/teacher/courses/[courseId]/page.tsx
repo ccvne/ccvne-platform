@@ -84,7 +84,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
         <div>
           <div className="flex items-center gap-x-2">
             <IconBadge icon={LayoutDashboard} />
-            <h2 className="text-xl">Customize your course</h2>
+            <h2 className="text-xl">Customize Your Course</h2>
           </div>
           <TitleForm initialData={course} courseId={course.id} />
           <DescriptionForm initialData={course} courseId={course.id} />
@@ -109,7 +109,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           <div>
             <div className="flex items-center gap-x-2">
               <IconBadge icon={CircleDollarSign} />
-              <h2 className="text-xl">Sell your course</h2>
+              <h2 className="text-xl">Sell Your Course</h2>
             </div>
             <PriceForm initialData={course} courseId={course.id} />
           </div>
