@@ -4,6 +4,7 @@
         "hookform",
         "nextjs",
         "tailwindcss",
-        "Uploadthing"
+        "Uploadthing",
+        "zustand"
     ]
 }

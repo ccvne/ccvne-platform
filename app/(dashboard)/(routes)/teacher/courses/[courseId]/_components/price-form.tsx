@@ -23,17 +23,17 @@ import { Input } from "@/components/ui/input";
 import { formatPrice } from "@/lib/format";
 
 interface PriceFormProps {
-  initialData: Course
+  initialData: Course;
   courseId: string;
-}
+};
 
 const formSchema = z.object({
-  price: z.coerce.number()
+  price: z.coerce.number(),
 });
 
 export const PriceForm = ({
   initialData,
-  courseId,
+  courseId
 }: PriceFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -45,7 +45,7 @@ export const PriceForm = ({
     resolver: zodResolver(formSchema),
     defaultValues: {
       price: initialData?.price || undefined,
-    }
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -53,13 +53,13 @@ export const PriceForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.patch(`/api/courses/${courseId}`, values);
-      toast.success("Course Updated Successfully");
+      toast.success("Course Updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something Went Wrong");
     }
-  };
+  }
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
@@ -77,13 +77,14 @@ export const PriceForm = ({
         </Button>
       </div>
       {!isEditing && (
-        <p
-          className={cn(
-            "text-sm mt-2",
-            !initialData.price && "text-slate-500 italic"
-          )}
-        >
-          {initialData.price? formatPrice(initialData.price) : "You did not insert a price..."}
+        <p className={cn(
+          "text-sm mt-2",
+          !initialData.price && "text-slate-500 italic"
+        )}>
+          {initialData.price
+            ? formatPrice(initialData.price)
+            : "No Price..."
+          }
         </p>
       )}
       {isEditing && (
@@ -99,10 +100,10 @@ export const PriceForm = ({
                 <FormItem>
                   <FormControl>
                     <Input
-                    type="number"
-                    step="0.01"
+                      type="number"
+                      step="0.01"
                       disabled={isSubmitting}
-                      placeholder="Set a price for your course!"
+                      placeholder="Set a Price for Your Course."
                       {...field}
                     />
                   </FormControl>
@@ -111,7 +112,10 @@ export const PriceForm = ({
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button disabled={!isValid || isSubmitting} type="submit">
+              <Button
+                disabled={!isValid || isSubmitting}
+                type="submit"
+              >
                 Save
               </Button>
             </div>
@@ -119,5 +123,5 @@ export const PriceForm = ({
         </Form>
       )}
     </div>
-  );
-};
+  )
+}
