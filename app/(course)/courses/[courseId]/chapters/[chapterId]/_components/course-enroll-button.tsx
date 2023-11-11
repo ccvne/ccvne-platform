@@ -3,20 +3,19 @@
 import axios from "axios";
 import { useState } from "react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 import { Button } from "@/components/ui/button";
-import { formatPrice } from "@/lib/format";
 
 interface CourseEnrollButtonProps {
-  price: number;
   courseId: string;
 }
 
 export const CourseEnrollButton = ({
-  price,
   courseId,
 }: CourseEnrollButtonProps) => {
   const [isLoading, setIsLoading] = useState(false);
+  const router = useRouter();
 
   const onClick = async () => {
     try {
@@ -24,7 +23,8 @@ export const CourseEnrollButton = ({
 
       const response = await axios.post(`/api/courses/${courseId}/checkout`)
 
-      window.location.assign(response.data.url);
+      toast.success("Enrolled Successfully");
+      router.refresh();
     } catch {
       toast.error("Something Went Wrong");
     } finally {
@@ -39,7 +39,7 @@ export const CourseEnrollButton = ({
       size="sm"
       className="w-full md:w-auto"
     >
-      Enroll for {formatPrice(price)}
+      Enroll for Free
     </Button>
   )
 }
