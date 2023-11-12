@@ -7,6 +7,7 @@ import { getCourses } from "@/actions/get-courses";
 import { CoursesList } from "@/components/courses-list";
 
 import { Categories } from "./_components/categories";
+import { Category } from "@prisma/client";
 
 interface SearchPageProps {
   searchParams: {
@@ -17,6 +18,7 @@ interface SearchPageProps {
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
   const { userId } = auth();
+
 
   if (!userId) {
     return redirect("/");
