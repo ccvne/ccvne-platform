@@ -2,7 +2,7 @@
 
 import { UserButton, useAuth } from "@clerk/nextjs";
 import { usePathname } from "next/navigation";
-import { LogOut } from "lucide-react";
+import { LogOut, Library } from "lucide-react";
 import Link from "next/link";
 
 import { Button } from "@/components/ui/button";
@@ -36,7 +36,8 @@ export const NavbarRoutes = () => {
         ) : isTeacher(userId) ? (
           <Link href="/teacher/courses">
             <Button size="sm" variant="ghost">
-              Teacher mode
+              <Library className="h-4 w-4 mr-2" />
+              Teacher
             </Button>
           </Link>
         ) : null}

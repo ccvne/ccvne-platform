@@ -53,7 +53,7 @@ export const CategoryItem = ({
       type="button"
     >
       {Icon && <Icon size={20} />}
-      <div className="truncate">
+      <div className="truncate text-xs font-semibold">
         {label}
       </div>
     </button>
