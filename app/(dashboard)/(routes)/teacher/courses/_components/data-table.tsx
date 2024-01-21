@@ -12,8 +12,8 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Link from "next/link"
-import { PlusCircle } from "lucide-react"
+import Link from "next/link";
+import { PlusCircle } from "lucide-react";
 
 import {
   Table,
@@ -64,12 +64,12 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="max-w-sm"
+          className="max-w-[18rem] md:max-w-sm"
         />
         <Link href="/teacher/create">
-          <Button>
-            <PlusCircle className="h-4 w-4 mr-2" />
-            New Course
+          <Button className="">
+            <PlusCircle className="h-4 w-4 md:mr-2" />
+            <span className="hidden md:inline">New Course</span>
           </Button>
         </Link>
       </div>
