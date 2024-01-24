@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X, Info } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -26,7 +26,7 @@ interface ChapterDescriptionFormProps {
   initialData: Chapter;
   courseId: string;
   chapterId: string;
-};
+}
 
 const formSchema = z.object({
   description: z.string().min(1),
@@ -35,7 +35,7 @@ const formSchema = z.object({
 export const ChapterDescriptionForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterDescriptionFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -46,7 +46,7 @@ export const ChapterDescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || ""
+      description: initialData?.description || "",
     },
   });
 
@@ -54,40 +54,49 @@ export const ChapterDescriptionForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toast.success("Chapter Updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something Went Wrong");
     }
-  }
+  };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+      <div className="font-medium flex items-center justify-between mb-2">
         Chapter Description
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
           {isEditing ? (
-            <>Cancel</>
+            <div className="flex items-center p-1 border border-red-500 rounded-md">
+              <X className="h-4 w-4 text-red-500" />
+            </div>
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Description
-            </>
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Pencil className="h-4 w-4" />
+            </div>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <div className={cn(
-          "text-sm mt-2",
-          !initialData.description && "text-slate-500 italic"
-        )}>
-          {!initialData.description && "No Description..."}
+        <div
+          className={cn(
+            "text-sm mt-2",
+            !initialData.description && "text-slate-500"
+          )}
+        >
+          {!initialData.description && (
+            <div className="flex items-center gap-1">
+              <Info className="w-4 h-4" />
+              You did not insert a chapter description.
+            </div>
+          )}
           {initialData.description && (
-            <Preview
-              value={initialData.description}
-            />
+            <Preview value={initialData.description} />
           )}
         </div>
       )}
@@ -103,19 +112,14 @@ export const ChapterDescriptionForm = ({
               render={({ field }) => (
                 <FormItem>
                   <FormControl>
-                    <Editor
-                      {...field}
-                    />
+                    <Editor {...field} />
                   </FormControl>
                   <FormMessage />
                 </FormItem>
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>
             </div>
@@ -123,5 +127,5 @@ export const ChapterDescriptionForm = ({
         </Form>
       )}
     </div>
-  )
-}
+  );
+};

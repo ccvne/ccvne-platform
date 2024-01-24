@@ -8,10 +8,20 @@ import {
   Draggable,
   DropResult,
 } from "@hello-pangea/dnd";
-import { Grip, Pencil } from "lucide-react";
+import { CheckCheck, Eye, Grip, MoreHorizontal, Pencil } from "lucide-react";
+
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu";
 
 import { cn } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
+
+import Link from "next/link";
 
 interface ChaptersListProps {
   items: Chapter[];
@@ -51,11 +61,11 @@ export const ChaptersList = ({
 
     const bulkUpdateData = updatedChapters.map((chapter) => ({
       id: chapter.id,
-      position: items.findIndex((item) => item.id === chapter.id)
+      position: items.findIndex((item) => item.id === chapter.id),
     }));
 
     onReorder(bulkUpdateData);
-  }
+  };
 
   if (!isMounted) {
     return null;
@@ -75,7 +85,7 @@ export const ChaptersList = ({
                 {(provided) => (
                   <div
                     className={cn(
-                      "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm",
+                      "flex items-center gap-x-2 bg-slate-200 border-slate-200 border text-slate-700 rounded-md mb-4 text-sm overflow-auto",
                       chapter.isPublished &&
                         "bg-sky-100 border-sky-200 text-sky-700"
                     )}
@@ -92,21 +102,46 @@ export const ChaptersList = ({
                     >
                       <Grip className="h-5 w-5" />
                     </div>
-                    {chapter.title}
+                    <p className="line-clamp-1">{chapter.title}</p>
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
-                      {chapter.isFree && <Badge>Free</Badge>}
+                      {chapter.isFree && (
+                        <Badge className="flex items-center gap-2">
+                          <Eye className="w-3 h-3" />
+                          <span className="hidden md:inline">Pré-Visualização</span>
+                        </Badge>
+                      )}
                       <Badge
                         className={cn(
                           "bg-slate-500",
                           chapter.isPublished && "bg-sky-700"
                         )}
                       >
-                        {chapter.isPublished ? "Published" : "Draft"}
+                        {chapter.isPublished ? (
+                          <div className="flex items-center gap-2">
+                            <CheckCheck className="w-3 h-3" />
+                            <span>Publicado</span>
+                          </div>
+                        ) : (
+                          <div className="flex items-center gap-2">
+                            <Pencil className="w-3 h-3" />
+                            <span>Rascunho</span>
+                          </div>
+                        )}
                       </Badge>
-                      <Pencil
-                        onClick={() => onEdit(chapter.id)}
-                        className="w-4 h-4 cursor-pointer hover:opacity-75 transition"
-                      />
+                      <DropdownMenu>
+                        <DropdownMenuTrigger asChild>
+                          <Button variant="ghost" className="h-4 w-6 p-0">
+                            <span className="sr-only">Open Menu</span>
+                            <MoreHorizontal className="h-4 w-4" />
+                          </Button>
+                        </DropdownMenuTrigger>
+                        <DropdownMenuContent align="end">
+                          <DropdownMenuItem onClick={() => onEdit(chapter.id)}>
+                            <Pencil className="h-4 w-4 mr-2" />
+                            Editar
+                          </DropdownMenuItem>
+                        </DropdownMenuContent>
+                      </DropdownMenu>
                     </div>
                   </div>
                 )}

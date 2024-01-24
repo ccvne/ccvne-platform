@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -61,16 +61,17 @@ export const TitleForm = ({ initialData, courseId }: TitleFormProps) => {
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Course Title
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Title
-            </>
-          )}
-        </Button>
+          <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
+            {isEditing ? (
+              <div className="flex items-center p-1 border border-red-500 rounded-md">
+                <X className="h-4 w-4 text-red-500" />
+              </div>
+            ) : (
+              <div className="flex items-center p-1 border border-slate-700 rounded-md">
+                <Pencil className="h-4 w-4" />
+              </div>
+            )}
+          </Button>
       </div>
       {!isEditing && <p className="text-sm mt-2">{initialData.title}</p>}
       {isEditing && (

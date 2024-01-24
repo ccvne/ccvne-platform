@@ -80,7 +80,7 @@ export const columns: ColumnDef<Course>[] = [
             <Link href={`/teacher/courses/${id}`}>
               <DropdownMenuItem>
                 <Pencil className="h-4 w-4 mr-2" />
-                Edit
+                Editar
               </DropdownMenuItem>
             </Link>
           </DropdownMenuContent>

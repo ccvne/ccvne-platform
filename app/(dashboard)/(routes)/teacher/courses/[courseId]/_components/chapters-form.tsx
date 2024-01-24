@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Loader2, PlusCircle } from "lucide-react";
+import { Info, Loader2, Plus, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -94,16 +94,17 @@ export const ChaptersForm = ({
       )}
       <div className="font-medium flex items-center justify-between">
         Course Chapters
-        <Button onClick={toggleCreating} variant="ghost">
-          {isCreating ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add a Chapter
-            </>
-          )}
-        </Button>
+          <Button onClick={toggleCreating} variant="ghost" className="h-7 w-7">
+            {isCreating ? (
+              <div className="flex items-center p-1 border border-red-500 rounded-md">
+                <X className="h-4 w-4 text-red-500" />
+              </div>
+            ) : (
+              <div className="flex items-center p-1 border border-slate-700 rounded-md">
+                <Plus className="h-4 w-4" />
+              </div>
+            )}
+          </Button>
       </div>
       {isCreating && (
         <Form {...form}>
@@ -139,9 +140,14 @@ export const ChaptersForm = ({
       {!isCreating && (
         <div className={cn(
           "text-sm mt-2",
-          !initialData.chapters.length && "text-slate-500 italic"
+          !initialData.chapters.length && "text-slate-500 "
         )}>
-          {!initialData.chapters.length && "No Chapters"}
+          {!initialData.chapters.length && (
+            <div className="flex items-center gap-1">
+              <Info className="w-4 h-4" />
+              No chapter was created.
+            </div>
+          )}
           <ChaptersList
             onEdit={onEdit}
             onReorder={onReorder}

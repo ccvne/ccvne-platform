@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { ImageIcon, Pencil, PlusCircle } from "lucide-react";
+import { ImageIcon, Pencil, Plus, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -43,23 +43,25 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
-      <div className="font-medium flex items-center justify-between">
+      <div className="font-medium flex items-center justify-between mb-2">
         Course Image
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing && <>Cancel</>}
-          {!isEditing && !initialData.imageUrl && (
-            <>
-              <PlusCircle className="h-4 w-4 mr-2" />
-              Add an Image
-            </>
-          )}
-          {!isEditing && initialData.imageUrl && (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Image
-            </>
-          )}
-        </Button>
+          <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
+            {isEditing && (
+              <div className="flex items-center p-1 border border-red-500 rounded-md">
+                <X className="h-4 w-4 text-red-500" />
+              </div>
+            )}
+            {!isEditing && !initialData.imageUrl && (
+              <div className="flex items-center p-1 border border-slate-700 rounded-md">
+                <Plus className="h-4 w-4" />
+              </div>
+            )}
+            {!isEditing && initialData.imageUrl && (
+              <div className="flex items-center p-1 border border-slate-700 rounded-md">
+                <Pencil className="h-4 w-4" />
+              </div>
+            )}
+          </Button>
       </div>
       {!isEditing &&
         (!initialData.imageUrl ? (

@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Info, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -20,15 +20,13 @@ import {
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import { Editor } from "@/components/editor";
-import { Preview } from "@/components/preview";
 import { Checkbox } from "@/components/ui/checkbox";
 
 interface ChapterAccessFormProps {
   initialData: Chapter;
   courseId: string;
   chapterId: string;
-};
+}
 
 const formSchema = z.object({
   isFree: z.boolean().default(false),
@@ -37,7 +35,7 @@ const formSchema = z.object({
 export const ChapterAccessForm = ({
   initialData,
   courseId,
-  chapterId
+  chapterId,
 }: ChapterAccessFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
@@ -48,7 +46,7 @@ export const ChapterAccessForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      isFree: !!initialData.isFree
+      isFree: !!initialData.isFree,
     },
   });
 
@@ -56,39 +54,51 @@ export const ChapterAccessForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
-      await axios.patch(`/api/courses/${courseId}/chapters/${chapterId}`, values);
+      await axios.patch(
+        `/api/courses/${courseId}/chapters/${chapterId}`,
+        values
+      );
       toast.success("Chapter updated");
       toggleEdit();
       router.refresh();
     } catch {
       toast.error("Something went wrong");
     }
-  }
+  };
 
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Chapter Access
-        <Button onClick={toggleEdit} variant="ghost">
+        <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
           {isEditing ? (
-            <>Cancel</>
+            <div className="flex items-center p-1 border border-red-500 rounded-md">
+              <X className="h-4 w-4 text-red-500" />
+            </div>
           ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Access
-            </>
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Pencil className="h-4 w-4" />
+            </div>
           )}
         </Button>
       </div>
       {!isEditing && (
-        <p className={cn(
-          "text-sm mt-2",
-          !initialData.isFree && "text-slate-500 italic"
-        )}>
+        <p
+          className={cn(
+            "text-sm mt-2",
+            !initialData.isFree && "text-slate-500"
+          )}
+        >
           {initialData.isFree ? (
-            <>This Chapter is Free for Preview.</>
+            <div className="flex items-center gap-1">
+              <Info className="w-4 h-4" />
+              This chapter is free for preview.
+            </div>
           ) : (
-            <>This Chapter is not Free.</>
+            <div className="flex items-center gap-1">
+              <Info className="w-4 h-4" />
+              This chapter is not free for preview.
+            </div>
           )}
         </p>
       )}
@@ -110,18 +120,17 @@ export const ChapterAccessForm = ({
                     />
                   </FormControl>
                   <div className="space-y-1 leading-none">
-                    <FormDescription>
-                      Check this Box if you Want to Make this Chapter Free for Preview.
+                    <FormDescription className="flex items-center gap-1">
+                      <Info className="w-4 h-4" />
+                      Check this Box if you Want to Make this Chapter Free for
+                      Preview.
                     </FormDescription>
                   </div>
                 </FormItem>
               )}
             />
             <div className="flex items-center gap-x-2">
-              <Button
-                disabled={!isValid || isSubmitting}
-                type="submit"
-              >
+              <Button disabled={!isValid || isSubmitting} type="submit">
                 Save
               </Button>
             </div>
@@ -129,5 +138,5 @@ export const ChapterAccessForm = ({
         </Form>
       )}
     </div>
-  )
-}
+  );
+};

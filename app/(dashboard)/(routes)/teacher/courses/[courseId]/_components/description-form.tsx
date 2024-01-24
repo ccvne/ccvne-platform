@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil } from "lucide-react";
+import { Info, Pencil, Trash, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -22,7 +22,7 @@ import { cn } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
 interface DescriptionFormProps {
-  initialData: Course
+  initialData: Course;
   courseId: string;
 }
 
@@ -45,8 +45,8 @@ export const DescriptionForm = ({
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      description: initialData?.description || ""
-    }
+      description: initialData?.description || "",
+    },
   });
 
   const { isSubmitting, isValid } = form.formState;
@@ -66,25 +66,33 @@ export const DescriptionForm = ({
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between">
         Course Description
-        <Button onClick={toggleEdit} variant="ghost">
-          {isEditing ? (
-            <>Cancel</>
-          ) : (
-            <>
-              <Pencil className="h-4 w-4 mr-2" />
-              Edit Description
-            </>
-          )}
-        </Button>
+          <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
+            {isEditing ? (
+              <div className="flex items-center p-1 border border-red-500 rounded-md">
+                <X className="h-4 w-4 text-red-500" />
+              </div>
+            ) : (
+              <div className="flex items-center p-1 border border-slate-700 rounded-md">
+                <Pencil className="h-4 w-4" />
+              </div>
+            )}
+          </Button>
       </div>
       {!isEditing && (
         <p
           className={cn(
             "text-sm mt-2",
-            !initialData.description && "text-slate-500 italic"
+            !initialData.description && "text-slate-500"
           )}
         >
-          {initialData.description || "You did not insert a description..."}
+          {initialData.description || 
+          (
+            <div className="flex items-center gap-1">
+              <Info className="w-4 h-4" />
+              You did not insert a description.
+            </div>
+          )
+          }
         </p>
       )}
       {isEditing && (
