@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { Plus, File, Loader2, X,Info } from "lucide-react";
+import { Plus, File, Loader2, X, AlertOctagon, Sparkles } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -59,28 +59,26 @@ export const AttachmentForm = ({
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between mb-2">
         Attachments
-          <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
-            {isEditing ? (
-              <div className="flex items-center p-1 border border-red-500 rounded-md">
-                <X className="h-4 w-4 text-red-500" />
-              </div>
-            ) : (
-              <div className="flex items-center p-1 border border-slate-700 rounded-md">
-                <Plus className="h-4 w-4" />
-              </div>
-            )}
-          </Button>
+        <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
+          {isEditing ? (
+            <div className="flex items-center p-1 border border-red-500 rounded-md">
+              <X className="h-4 w-4 text-red-500" />
+            </div>
+          ) : (
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Plus className="h-4 w-4" />
+            </div>
+          )}
+        </Button>
       </div>
       {!isEditing && (
         <>
-          {initialData.attachments.length === 0 && 
-          (
-            <div className="flex items-center gap-1 text-slate-500 text-sm">
-              <Info className="w-4 h-4" />
+          {initialData.attachments.length === 0 && (
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <AlertOctagon className="w-4 h-4" />
               You did not insert a description.
             </div>
-          )
-          }
+          )}
           {initialData.attachments.length > 0 && (
             <div className="space-y-2">
               {initialData.attachments.map((attachment) => (
@@ -96,7 +94,10 @@ export const AttachmentForm = ({
                     </div>
                   )}
                   {deletingId !== attachment.id && (
-                    <button onClick={() => onDelete(attachment.id)} className="ml-auto hover:opacity-75 transition">
+                    <button
+                      onClick={() => onDelete(attachment.id)}
+                      className="ml-auto hover:opacity-75 transition"
+                    >
                       <X className="h-4 w-4" />
                     </button>
                   )}
@@ -116,8 +117,9 @@ export const AttachmentForm = ({
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">
-            Add anything your studens might need to complete your course.
+          <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
+            <Sparkles className="w-4 h-4"/>
+            <p>Add anything your studens might need to complete your course.</p>
           </div>
         </div>
       )}

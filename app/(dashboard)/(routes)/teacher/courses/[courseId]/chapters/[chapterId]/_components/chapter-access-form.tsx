@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Info, Pencil, X } from "lucide-react";
+import { AlertOctagon, Pencil, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -16,7 +16,6 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormMessage,
 } from "@/components/ui/form";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -90,13 +89,13 @@ export const ChapterAccessForm = ({
           )}
         >
           {initialData.isFree ? (
-            <div className="flex items-center gap-1">
-              <Info className="w-4 h-4" />
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <AlertOctagon className="w-4 h-4" />
               This chapter is free for preview.
             </div>
           ) : (
-            <div className="flex items-center gap-1">
-              <Info className="w-4 h-4" />
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <AlertOctagon className="w-4 h-4" />
               This chapter is not free for preview.
             </div>
           )}
@@ -121,9 +120,8 @@ export const ChapterAccessForm = ({
                   </FormControl>
                   <div className="space-y-1 leading-none">
                     <FormDescription className="flex items-center gap-1">
-                      <Info className="w-4 h-4" />
-                      Check this Box if you Want to Make this Chapter Free for
-                      Preview.
+                      Check this box if you want to make this chapter free for
+                      preview.
                     </FormDescription>
                   </div>
                 </FormItem>

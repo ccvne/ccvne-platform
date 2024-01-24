@@ -3,7 +3,15 @@
 import * as z from "zod";
 import axios from "axios";
 import MuxPlayer from "@mux/mux-player-react";
-import { Pencil, Plus, PlusCircle, Video, X } from "lucide-react";
+import {
+  HelpCircle,
+  Pencil,
+  Plus,
+  PlusCircle,
+  Sparkles,
+  Video,
+  X,
+} from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -89,8 +97,9 @@ export const ChapterVideoForm = ({
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">
-            Upload this Chapter&apos;s Video.
+          <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
+            <Sparkles className="w-4 h-4" />
+            <p className="">Upload a smooth and clear video to this chapter.</p>
           </div>
         </div>
       )}

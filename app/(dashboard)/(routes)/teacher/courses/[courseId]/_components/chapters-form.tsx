@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Info, Loader2, Plus, X } from "lucide-react";
+import { AlertOctagon, Loader2, Plus, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -26,22 +26,19 @@ import { ChaptersList } from "./chapters-list";
 interface ChaptersFormProps {
   initialData: Course & { chapters: Chapter[] };
   courseId: string;
-};
+}
 
 const formSchema = z.object({
   title: z.string().min(1),
 });
 
-export const ChaptersForm = ({
-  initialData,
-  courseId
-}: ChaptersFormProps) => {
+export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
   const [isCreating, setIsCreating] = useState(false);
   const [isUpdating, setIsUpdating] = useState(false);
 
   const toggleCreating = () => {
     setIsCreating((current) => !current);
-  }
+  };
 
   const router = useRouter();
 
@@ -63,14 +60,14 @@ export const ChaptersForm = ({
     } catch {
       toast.error("Something Went Wrong");
     }
-  }
+  };
 
   const onReorder = async (updateData: { id: string; position: number }[]) => {
     try {
       setIsUpdating(true);
 
       await axios.put(`/api/courses/${courseId}/chapters/reorder`, {
-        list: updateData
+        list: updateData,
       });
       toast.success("Chapters Reordered");
       router.refresh();
@@ -79,11 +76,11 @@ export const ChaptersForm = ({
     } finally {
       setIsUpdating(false);
     }
-  }
+  };
 
   const onEdit = (id: string) => {
     router.push(`/teacher/courses/${courseId}/chapters/${id}`);
-  }
+  };
 
   return (
     <div className="relative mt-6 border bg-slate-100 rounded-md p-4">
@@ -94,17 +91,17 @@ export const ChaptersForm = ({
       )}
       <div className="font-medium flex items-center justify-between">
         Course Chapters
-          <Button onClick={toggleCreating} variant="ghost" className="h-7 w-7">
-            {isCreating ? (
-              <div className="flex items-center p-1 border border-red-500 rounded-md">
-                <X className="h-4 w-4 text-red-500" />
-              </div>
-            ) : (
-              <div className="flex items-center p-1 border border-slate-700 rounded-md">
-                <Plus className="h-4 w-4" />
-              </div>
-            )}
-          </Button>
+        <Button onClick={toggleCreating} variant="ghost" className="h-7 w-7">
+          {isCreating ? (
+            <div className="flex items-center p-1 border border-red-500 rounded-md">
+              <X className="h-4 w-4 text-red-500" />
+            </div>
+          ) : (
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Plus className="h-4 w-4" />
+            </div>
+          )}
+        </Button>
       </div>
       {isCreating && (
         <Form {...form}>
@@ -128,23 +125,22 @@ export const ChaptersForm = ({
                 </FormItem>
               )}
             />
-            <Button
-              disabled={!isValid || isSubmitting}
-              type="submit"
-            >
+            <Button disabled={!isValid || isSubmitting} type="submit">
               Create
             </Button>
           </form>
         </Form>
       )}
       {!isCreating && (
-        <div className={cn(
-          "text-sm mt-2",
-          !initialData.chapters.length && "text-slate-500 "
-        )}>
+        <div
+          className={cn(
+            "text-sm mt-2",
+            !initialData.chapters.length && "text-slate-500 "
+          )}
+        >
           {!initialData.chapters.length && (
-            <div className="flex items-center gap-1">
-              <Info className="w-4 h-4" />
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <AlertOctagon className="w-4 h-4" />
               No chapter was created.
             </div>
           )}
@@ -156,10 +152,13 @@ export const ChaptersForm = ({
         </div>
       )}
       {!isCreating && (
-        <p className="text-xs text-muted-foreground mt-4">
-          Drag and Drop to Reorder the Chapters.
-        </p>
+        <div className="flex item-center gap-1 text-xs text-sky-700">
+          <Sparkles className="w-4 h-4"/>
+          <p>
+            Drag and drop to reorder the chapters.
+          </p>
+        </div>
       )}
     </div>
-  )
-}
+  );
+};

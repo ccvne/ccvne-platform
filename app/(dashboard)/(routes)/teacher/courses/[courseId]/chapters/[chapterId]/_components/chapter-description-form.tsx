@@ -4,7 +4,7 @@ import * as z from "zod";
 import axios from "axios";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import { Pencil, X, Info } from "lucide-react";
+import { Pencil, X, AlertOctagon } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -90,8 +90,8 @@ export const ChapterDescriptionForm = ({
           )}
         >
           {!initialData.description && (
-            <div className="flex items-center gap-1">
-              <Info className="w-4 h-4" />
+            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+              <AlertOctagon className="w-4 h-4" />
               You did not insert a chapter description.
             </div>
           )}

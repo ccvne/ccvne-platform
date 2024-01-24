@@ -2,7 +2,7 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { ImageIcon, Pencil, Plus, X } from "lucide-react";
+import { ImageIcon, Pencil, Plus, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
@@ -45,23 +45,23 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between mb-2">
         Course Image
-          <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
-            {isEditing && (
-              <div className="flex items-center p-1 border border-red-500 rounded-md">
-                <X className="h-4 w-4 text-red-500" />
-              </div>
-            )}
-            {!isEditing && !initialData.imageUrl && (
-              <div className="flex items-center p-1 border border-slate-700 rounded-md">
-                <Plus className="h-4 w-4" />
-              </div>
-            )}
-            {!isEditing && initialData.imageUrl && (
-              <div className="flex items-center p-1 border border-slate-700 rounded-md">
-                <Pencil className="h-4 w-4" />
-              </div>
-            )}
-          </Button>
+        <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
+          {isEditing && (
+            <div className="flex items-center p-1 border border-red-500 rounded-md">
+              <X className="h-4 w-4 text-red-500" />
+            </div>
+          )}
+          {!isEditing && !initialData.imageUrl && (
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Plus className="h-4 w-4" />
+            </div>
+          )}
+          {!isEditing && initialData.imageUrl && (
+            <div className="flex items-center p-1 border border-slate-700 rounded-md">
+              <Pencil className="h-4 w-4" />
+            </div>
+          )}
+        </Button>
       </div>
       {!isEditing &&
         (!initialData.imageUrl ? (
@@ -88,8 +88,9 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
               }
             }}
           />
-          <div className="text-xs text-muted-foreground mt-4">
-            16:9 aspect ratio is recommended!
+          <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
+            <Sparkles className="w-4 h-4" />
+            <p>Using a 16:9 aspect ratio is recommended!</p>
           </div>
         </div>
       )}
