@@ -2,37 +2,30 @@
 
 import * as z from "zod";
 import axios from "axios";
-import MuxPlayer from "@mux/mux-player-react";
-import {
-  Pencil,
-  Plus,
-  Sparkles,
-  Video,
-  X,
-} from "lucide-react";
+import { FileText, Pencil, Plus, Sparkles, X } from "lucide-react";
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
-import { Chapter, MuxData } from "@prisma/client";
+import { Chapter } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-interface ChapterVideoFormProps {
-  initialData: Chapter & { muxData?: MuxData | null };
+interface ChapterPdfFormProps {
+  initialData: Chapter;
   courseId: string;
   chapterId: string;
 }
 
 const formSchema = z.object({
-  videoUrl: z.string().min(1),
+  pdfUrl: z.string().min(1),
 });
 
-export const ChapterVideoForm = ({
+export const ChapterPdfForm = ({
   initialData,
   courseId,
   chapterId,
-}: ChapterVideoFormProps) => {
+}: ChapterPdfFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
   const toggleEdit = () => setIsEditing((current) => !current);
@@ -56,58 +49,62 @@ export const ChapterVideoForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between mb-2">
-        Course Video
+        Course PDF
         <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
           {isEditing && (
             <div className="flex items-center p-1 border border-red-500 rounded-md">
               <X className="h-4 w-4 text-red-500" />
             </div>
           )}
-          {!isEditing && !initialData.videoUrl && (
+          {!isEditing && !initialData.pdfUrl && (
             <div className="flex items-center p-1 border border-slate-700 rounded-md">
               <Plus className="h-4 w-4" />
             </div>
           )}
-          {!isEditing && initialData.videoUrl && (
+          {!isEditing && initialData.pdfUrl && (
             <div className="flex items-center p-1 border border-slate-700 rounded-md">
               <Pencil className="h-4 w-4" />
             </div>
           )}
         </Button>
       </div>
-      {!isEditing &&
-        (!initialData.videoUrl ? (
-          <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-            <Video className="h-10 w-10 text-slate-500" />
-          </div>
-        ) : (
-          <div className="relative aspect-video mt-2">
-            <MuxPlayer playbackId={initialData?.muxData?.playbackId || ""} />
-          </div>
-        ))}
+      {!isEditing && (
+        <div>
+          {!initialData.pdfUrl ? (
+            <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+              {/* Display a placeholder or message for no PDF */}
+              <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
+                <FileText className="h-10 w-10 text-slate-500" />
+              </div>
+            </div>
+          ) : (
+            <div className="space-y-2">
+              <iframe src={initialData.pdfUrl} className="w-full h-[40rem]"/>
+            </div>
+          )}
+        </div>
+      )}
       {isEditing && (
         <div>
+          {/* Use UploadThing for PDF uploads */}
           <FileUpload
-            endpoint="chapterVideos"
+            endpoint="chapterPDFs"
             onChange={(url) => {
               if (url) {
-                onSubmit({ videoUrl: url });
+                onSubmit({ pdfUrl: url });
               }
             }}
           />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
             <Sparkles className="w-4 h-4" />
-            <p className="">Upload a smooth and clear video to this chapter.</p>
+            <p className="">Upload a nice looking PDF to this chapter.</p>
           </div>
         </div>
       )}
-      {initialData.videoUrl && !isEditing && (
-        <div className="flex item-center gap-1 text-xs text-sky-700">
+      {initialData.pdfUrl && !isEditing && (
+        <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
           <Sparkles className="w-4 h-4" />
-          <p>
-            Videos can take a a few minutes to process. Refresh the page if the
-            video does not appear.
-          </p>
+          <p>Refresh the page if the PDF does not appear.</p>
         </div>
       )}
     </div>

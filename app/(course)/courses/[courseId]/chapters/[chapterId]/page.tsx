@@ -9,6 +9,7 @@ import { Preview } from "@/components/preview";
 import { VideoPlayer } from "./_components/video-player";
 import { CourseEnrollButton } from "./_components/course-enroll-button";
 import { CourseProgressButton } from "./_components/course-progress-button";
+import { PDFViewer } from "./_components/pdf-viewer";
 
 const ChapterIdPage = async ({
   params,
@@ -50,28 +51,38 @@ const ChapterIdPage = async ({
       {isLocked && (
         <Banner
           variant="warning"
-          label="You need to purchase this course to watch this chapter."
+          label="You need to enroll in this course to watch this chapter."
         />
       )}
       <div className="flex flex-col max-w-screen-2xl mx-auto pb-20 p-4">
         <div className="mb-6">
-          <div className="relative aspect-video border rounded-md overflow-hidden bg-slate-100">
-            <div className="absolute inset-y-0 inset-x-0 w-full h-full">
-              <VideoPlayer
-                chapterId={params.chapterId}
-                title={chapter.title}
-                courseId={params.courseId}
-                nextChapterId={nextChapter?.id}
-                playbackId={muxData?.playbackId!}
-                isLocked={isLocked}
-                completeOnEnd={completeOnEnd}
-              />
+          {chapter.videoUrl ? (
+            <div className="relative aspect-video border rounded-md overflow-hidden bg-slate-100">
+              <div className="absolute inset-y-0 inset-x-0 w-full h-full">
+                <VideoPlayer
+                  chapterId={params.chapterId}
+                  title={chapter.title}
+                  courseId={params.courseId}
+                  nextChapterId={nextChapter?.id}
+                  playbackId={muxData?.playbackId!}
+                  isLocked={isLocked}
+                  completeOnEnd={completeOnEnd}
+                />
+              </div>
             </div>
-          </div>
+          ) : (
+            <div className="relative aspect-[3/4] md:aspect-video border rounded-md overflow-hidden bg-slate-100">
+              <div className="absolute inset-y-0 inset-x-0 w-full h-full">
+                <PDFViewer chapter={chapter} isLocked={isLocked} />
+              </div>
+            </div>
+          )}
         </div>
         <div>
           <div className="border rounded-md p-6 flex flex-col lg:flex-row items-center justify-between">
-            <h2 className="text-lg lg:text-2xl font-semibold mb-2 lg:mb-0 lg:text-center">{chapter.title}</h2>
+            <h2 className="text-lg lg:text-2xl font-semibold mb-2 lg:mb-0 lg:text-center">
+              {chapter.title}
+            </h2>
             {purchase ? (
               <CourseProgressButton
                 chapterId={params.chapterId}

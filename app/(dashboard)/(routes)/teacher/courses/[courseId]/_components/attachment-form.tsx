@@ -76,7 +76,7 @@ export const AttachmentForm = ({
           {initialData.attachments.length === 0 && (
             <div className="flex items-center gap-1 text-xs text-muted-foreground">
             <AlertOctagon className="w-4 h-4" />
-              You did not insert a description.
+              You did not upload an attachment.
             </div>
           )}
           {initialData.attachments.length > 0 && (
@@ -119,7 +119,7 @@ export const AttachmentForm = ({
           />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
             <Sparkles className="w-4 h-4"/>
-            <p>Add anything your studens might need to complete your course.</p>
+            <p>Add anything your students might need to complete your course.</p>
           </div>
         </div>
       )}

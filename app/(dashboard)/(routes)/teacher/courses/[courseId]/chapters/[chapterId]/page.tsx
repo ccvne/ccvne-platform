@@ -1,7 +1,7 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, Clapperboard, Eye, LayoutList } from "lucide-react";
+import { ArrowLeft, BookPlus, Eye, LayoutList } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -10,8 +10,8 @@ import { Banner } from "@/components/banner";
 import { ChapterTitleForm } from "./_components/chapter-title-form";
 import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
-import { ChapterVideoForm } from "./_components/chapter-video-form";
 import { ChapterActions } from "./_components/chapter-actions";
+import { ChapterOptionForm } from "./_components/chapter-option-form";
 
 const ChapterIdPage = async ({
   params,
@@ -38,7 +38,7 @@ const ChapterIdPage = async ({
     return redirect("/");
   }
 
-  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl];
+  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl || chapter.pdfUrl];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -113,10 +113,10 @@ const ChapterIdPage = async ({
           </div>
           <div>
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={Clapperboard} />
-              <h2 className="text-xl font-medium">Add a Video</h2>
+              <IconBadge icon={BookPlus} />
+              <h2 className="text-xl font-medium">Add Chapter Content</h2>
             </div>
-            <ChapterVideoForm
+            <ChapterOptionForm
               initialData={chapter}
               courseId={params.courseId}
               chapterId={params.chapterId}

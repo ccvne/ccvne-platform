@@ -1,10 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import {
-  File,
-  LayoutDashboard,
-  ListChecks,
-} from "lucide-react";
+import { File, LayoutList, ListChecks } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -91,7 +87,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mt-16">
           <div>
             <div className="flex items-center gap-x-2">
-              <IconBadge icon={LayoutDashboard} />
+              <IconBadge icon={LayoutList} />
               <h2 className="text-xl font-medium">Customize Your Course</h2>
             </div>
             <TitleForm initialData={course} courseId={course.id} />
