@@ -49,7 +49,7 @@ export const ChapterPdfForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between mb-2">
-        Course PDF
+        Course Portable Document Format
         <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
           {isEditing && (
             <div className="flex items-center p-1 border border-red-500 rounded-md">
@@ -72,21 +72,24 @@ export const ChapterPdfForm = ({
         <div>
           {!initialData.pdfUrl ? (
             <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
-              {/* Display a placeholder or message for no PDF */}
               <div className="flex items-center justify-center h-60 bg-slate-200 rounded-md">
                 <FileText className="h-10 w-10 text-slate-500" />
               </div>
             </div>
           ) : (
-            <div className="space-y-2">
-              <iframe src={initialData.pdfUrl} className="w-full h-[40rem]"/>
+            <div className="relative aspect-[3/4] md:aspect-video border rounded-md overflow-hidden bg-slate-100">
+              <div className="absolute inset-y-0 inset-x-0 w-full h-full">
+                <iframe
+                  src={`${initialData.pdfUrl}#toolbar=0`}
+                  className="w-full h-full"
+                />
+              </div>
             </div>
           )}
         </div>
       )}
       {isEditing && (
         <div>
-          {/* Use UploadThing for PDF uploads */}
           <FileUpload
             endpoint="chapterPDFs"
             onChange={(url) => {
