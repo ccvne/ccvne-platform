@@ -13,13 +13,11 @@ import { cn } from "@/lib/utils";
 interface CategoryItemProps {
   label: string;
   value?: string;
-  icon?: IconType;
 };
 
 export const CategoryItem = ({
   label,
   value,
-  icon: Icon,
 }: CategoryItemProps) => {
   const pathname = usePathname();
   const router = useRouter();
@@ -47,12 +45,11 @@ export const CategoryItem = ({
     <button
       onClick={onClick}
       className={cn(
-        "py-2 px-3 text-sm border rounded-md flex items-center gap-x-1 hover:border-sky-700 transition",
+        "py-2 px-3 text-sm rounded-md flex items-center gap-x-1 hover:bg-slate-200 transition cursor-pointer bg-muted",
         isSelected && "border-sky-700 bg-sky-200/20 text-sky-800"
       )}
       type="button"
     >
-      {Icon && <Icon size={20} />}
       <div className="truncate text-xs font-semibold">
         {label}
       </div>
