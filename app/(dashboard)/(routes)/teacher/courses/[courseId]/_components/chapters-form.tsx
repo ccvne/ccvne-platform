@@ -151,7 +151,7 @@ export const ChaptersForm = ({ initialData, courseId }: ChaptersFormProps) => {
           />
         </div>
       )}
-      {!isCreating && (
+      {!isCreating && initialData.chapters.length > 0 && (
         <div className="flex item-center gap-1 text-xs text-sky-700">
           <Sparkles className="w-4 h-4"/>
           <p>
