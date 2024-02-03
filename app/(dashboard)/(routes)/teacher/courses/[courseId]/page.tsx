@@ -1,6 +1,6 @@
 import { auth } from "@clerk/nextjs";
 import { redirect } from "next/navigation";
-import { File, LayoutList, ListChecks } from "lucide-react";
+import { File, LayoutList, ListChecks, Text } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -13,6 +13,7 @@ import { CategoryForm } from "./_components/category-form";
 import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
+import { NotesForm } from "./_components/notes-form";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const { userId } = auth();
@@ -116,6 +117,13 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
                 <h2 className="text-xl font-medium">Resources & Attachments</h2>
               </div>
               <AttachmentForm initialData={course} courseId={course.id} />
+            </div>
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Text} />
+                <h2 className="text-xl font-medium">Notes & Key Points</h2>
+              </div>
+              <NotesForm initialData={course} courseId={course.id} />
             </div>
           </div>
         </div>

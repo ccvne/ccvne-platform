@@ -25,7 +25,7 @@ export const CourseProgress = ({
   return (
     <div>
       <Progress
-        className="h-2"
+        className="bg-white border h-2"
         value={value}
         variant={variant}
       />
