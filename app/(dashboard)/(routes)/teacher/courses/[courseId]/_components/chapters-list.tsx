@@ -106,8 +106,7 @@ export const ChaptersList = ({
                     <div className="ml-auto pr-2 flex items-center gap-x-2">
                       {chapter.isFree && (
                         <Badge className="flex items-center gap-2">
-                          <Eye className="w-3 h-3" />
-                          <span className="hidden md:inline">Pré-Visualização</span>
+                          <Eye className="w-4 h-4" />
                         </Badge>
                       )}
                       <Badge
