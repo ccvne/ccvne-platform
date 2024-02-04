@@ -19,7 +19,7 @@ export const PDFViewer = ({ chapter, isLocked }: PDFViewerProps) => {
       )}
       {!isLocked && (
         <iframe
-          src={`${chapter.pdfUrl!}#toolbar=0`}
+          src={`https://drive.google.com/viewerng/viewer?embedded=true&url=${chapter.pdfUrl!}`}
           title="PDFViewer"
           className="w-full h-full"
         />
