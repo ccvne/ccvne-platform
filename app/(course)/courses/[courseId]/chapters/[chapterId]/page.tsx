@@ -94,12 +94,12 @@ const ChapterIdPage = async ({
               <CourseEnrollButton courseId={params.courseId} />
             )}
           </div>
-          <div className="border rounded-md p-2 mt-4">
+          <div className="border rounded-md p-4 mt-4">
             <Preview value={chapter.description!} />
           </div>
           {!!attachments.length && (
             <>
-              <div className="py-4">
+              <div className="flex flex-col gap-2 py-2">
                 {attachments.map((attachment) => (
                   <a
                     href={attachment.url}
