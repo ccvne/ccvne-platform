@@ -76,6 +76,7 @@ export const VideoPlayer = ({
         <MuxPlayer
           title={title}
           className={cn(!isReady && "hidden")}
+          accentColor="#0369a1"
           onCanPlay={() => setIsReady(true)}
           onEnded={onEnd}
           autoPlay
