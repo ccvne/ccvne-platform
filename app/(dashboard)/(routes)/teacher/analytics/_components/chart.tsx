@@ -23,9 +23,9 @@ export const Chart: React.FC<ChartProps> = ({ data }) => {
       <ResponsiveContainer width="100%" height={350}>
         <LineChart
           width={600}
-          height={300}
+          height={600}
           data={data}
-          margin={{ top: 20, right: 30, left: 20, bottom: 10 }}
+          margin={{ top: 30, right: 20, left: 20, bottom: 10 }}
         >
           <CartesianGrid strokeDasharray="3 3" />
           <XAxis dataKey="name" />
