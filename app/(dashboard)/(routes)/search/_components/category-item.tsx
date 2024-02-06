@@ -1,7 +1,6 @@
 "use client";
 
 import qs from "query-string";
-import { IconType } from "react-icons";
 import { 
   usePathname, 
   useRouter, 

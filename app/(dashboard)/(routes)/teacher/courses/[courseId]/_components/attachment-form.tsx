@@ -107,7 +107,7 @@ export const AttachmentForm = ({
                   <FormControl>
                     <Input
                       disabled={isSubmitting}
-                      placeholder="e.g. 'Work sheet with exercices."
+                      placeholder="e.g. 'Work sheet with exercices.'"
                       {...field}
                     />
                   </FormControl>
