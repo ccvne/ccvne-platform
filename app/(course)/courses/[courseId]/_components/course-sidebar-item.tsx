@@ -10,7 +10,6 @@ interface CourseSidebarItemProps {
   isCompleted: boolean;
   courseId: string;
   isLocked: boolean;
-  isActive: boolean;
 };
 
 export const CourseSidebarItem = ({
