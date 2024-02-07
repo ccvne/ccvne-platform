@@ -2,7 +2,7 @@ import { db } from "@/lib/db";
 
 export const getAnalytics = async (userId: string) => {
   try {
-    const purchases = await db.purchase.findMany({
+    const enrolledUsers = await db.purchase.findMany({
       where: {
         course: {
           userId: userId,
@@ -11,10 +11,11 @@ export const getAnalytics = async (userId: string) => {
       select: {
         userId: true,
       },
+      distinct: ['userId'],
     });
 
-    const enrolledUsersCount = purchases.length;
-
+    const enrolledUsersCount = enrolledUsers.length;
+    
     const totalUsersCount = await db.course.count();
 
     const data = [
