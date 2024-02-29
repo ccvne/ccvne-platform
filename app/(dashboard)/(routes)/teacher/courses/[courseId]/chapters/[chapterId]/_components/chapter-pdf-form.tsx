@@ -2,14 +2,17 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { FileText, Pencil, Plus, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import api from "@/lib/api";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
+
+import { useState } from "react";
 import { Chapter } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+
+import { FileText, Pencil, Plus, Sparkles, X } from "lucide-react";
+import { useRouter } from "next/navigation";
 
 interface ChapterPdfFormProps {
   initialData: Chapter;
@@ -28,19 +31,21 @@ export const ChapterPdfForm = ({
 }: ChapterPdfFormProps) => {
   const [isEditing, setIsEditing] = useState(false);
 
-  const toggleEdit = () => setIsEditing((current) => !current);
-
   const router = useRouter();
+  const toggleEdit = () => setIsEditing((current) => !current);
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      if (initialData.pdfUrl) {
+        await api.delete(`/uploads/${initialData.pdfUrl.split("/uploads/")[1]}`);
+      }
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
       );
-      toast.success("Chapter Updated Successfully");
       toggleEdit();
       router.refresh();
+      toast.success("Chapter Updated Successfully");
     } catch {
       toast.error("Something Went Wrong");
     }
@@ -91,16 +96,15 @@ export const ChapterPdfForm = ({
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="chapterPDFs"
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ pdfUrl: url });
-              }
+            contentType="pdf"
+            maxSize={12}
+            onChange={(data) => {
+              onSubmit({ pdfUrl: data.downloadUrl });
             }}
           />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
             <Sparkles className="w-4 h-4" />
-            <p className="">Upload a nice looking PDF to this chapter.</p>
+            <p>Upload a nice looking PDF to this chapter.</p>
           </div>
         </div>
       )}

@@ -2,25 +2,17 @@
 
 import * as z from "zod";
 import axios from "axios";
+import api from "@/lib/api";
 import toast from "react-hot-toast";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Attachment, Course } from "@prisma/client";
 
 import { Plus, File, X, AlertOctagon, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
+
 import { FileUpload } from "@/components/file-upload";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
 
 interface AttachmentFormProps {
   initialData: Course & { attachments: Attachment[] };
@@ -43,16 +35,6 @@ export const AttachmentForm = ({
 
   const router = useRouter();
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
-    defaultValues: {
-      name: "",
-      url: "",
-    },
-  });
-
-  const { isSubmitting, isValid } = form.formState;
-
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       await axios.post(`/api/courses/${courseId}/attachments`, values);
@@ -64,9 +46,12 @@ export const AttachmentForm = ({
     }
   };
 
-  const onDelete = async (id: string) => {
+  const onDelete = async (id: string, url: string) => {
+    const urlId = url.split("/uploads/")[1];
+
     try {
       setDeletingId(id);
+      await api.delete(`/uploads/${urlId}`);
       await axios.delete(`/api/courses/${courseId}/attachments/${id}`);
       toast.success("Attachment Deleted");
       router.refresh();
@@ -94,54 +79,21 @@ export const AttachmentForm = ({
         </Button>
       </div>
       {isEditing && (
-        <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="space-y-4 mt-4"
-          >
-            <FormField
-              control={form.control}
-              name="name"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      disabled={isSubmitting}
-                      placeholder="e.g. 'Work sheet with exercices.'"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            <FormField
-              control={form.control}
-              name="url"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <FileUpload
-                      endpoint="courseAttachment"
-                      onChange={(url) => {
-                        form.setValue("url", url as string);
-                        form.trigger("url");
-                        form.handleSubmit(onSubmit)();
-                      }}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </form>
+        <>
+          <FileUpload
+            contentType="all"
+            maxSize={12}
+            onChange={(data) => {
+              onSubmit({ url: data.downloadUrl, name: data.fileName });
+            }}
+          />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">
             <Sparkles className="w-4 h-4" />
             <p>
               Add anything your students might need to complete your course.
             </p>
           </div>
-        </Form>
+        </>
       )}
       {!isEditing && (
         <>
@@ -162,7 +114,7 @@ export const AttachmentForm = ({
                   <p className="text-xs line-clamp-1">{attachment.name}</p>
                   {deletingId !== attachment.id && (
                     <button
-                      onClick={() => onDelete(attachment.id)}
+                      onClick={() => onDelete(attachment.id, attachment.url)}
                       className="ml-auto hover:opacity-75 transition"
                     >
                       <X className="h-4 w-4" />

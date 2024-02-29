@@ -2,15 +2,18 @@
 
 import * as z from "zod";
 import axios from "axios";
-import { ImageIcon, Pencil, Plus, Sparkles, X } from "lucide-react";
-import { useState } from "react";
+import api from "@/lib/api";
+import Image from "next/image";
 import toast from "react-hot-toast";
+
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { Course } from "@prisma/client";
-import Image from "next/image";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+
+import { ImageIcon, Pencil, Plus, Sparkles, X } from "lucide-react";
 
 interface ImageFormProps {
   initialData: Course;
@@ -32,6 +35,9 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      if (initialData.imageUrl) {
+        await api.delete(`/uploads/${initialData.imageUrl.split("/uploads/")[1]}`);
+      }
       await axios.patch(`/api/courses/${courseId}`, values);
       toast.success("Course Updated Successfully");
       toggleEdit();
@@ -81,11 +87,10 @@ export const ImageForm = ({ initialData, courseId }: ImageFormProps) => {
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="courseImage"
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ imageUrl: url });
-              }
+            contentType="image"
+            maxSize={100}
+            onChange={(data) => {
+              onSubmit({ imageUrl: data.downloadUrl});
             }}
           />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">

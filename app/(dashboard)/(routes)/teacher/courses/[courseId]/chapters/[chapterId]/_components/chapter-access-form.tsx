@@ -82,24 +82,24 @@ export const ChapterAccessForm = ({
         </Button>
       </div>
       {!isEditing && (
-        <p
+        <div
           className={cn(
             "text-sm mt-2",
             !initialData.isFree && "text-slate-500"
           )}
         >
           {initialData.isFree ? (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1 text-xs text-muted-foreground">
               <AlertOctagon className="w-4 h-4" />
               This chapter is free for preview.
-            </div>
+            </p>
           ) : (
-            <div className="flex items-center gap-1 text-xs text-muted-foreground">
+            <p className="flex items-center gap-1 text-xs text-muted-foreground">
               <AlertOctagon className="w-4 h-4" />
               This chapter is not free for preview.
-            </div>
+            </p>
           )}
-        </p>
+        </div>
       )}
       {isEditing && (
         <Form {...form}>

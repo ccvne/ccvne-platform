@@ -2,21 +2,19 @@
 
 import * as z from "zod";
 import axios from "axios";
-import MuxPlayer from "@mux/mux-player-react";
-import {
-  Pencil,
-  Plus,
-  Sparkles,
-  Video,
-  X,
-} from "lucide-react";
-import { useState } from "react";
+import api from "@/lib/api";
 import toast from "react-hot-toast";
+import MuxPlayer from "@mux/mux-player-react";
+
+import { Pencil, Plus, Sparkles, Video, X } from "lucide-react";
+import { useState } from "react";
+
 import { useRouter } from "next/navigation";
 import { Chapter, MuxData } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
+
 
 interface ChapterVideoFormProps {
   initialData: Chapter & { muxData?: MuxData | null };
@@ -41,6 +39,9 @@ export const ChapterVideoForm = ({
 
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
+      if (initialData.videoUrl) {
+        await api.delete(`/uploads/${initialData.videoUrl.split("/uploads/")[1]}`);
+      }
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}`,
         values
@@ -88,11 +89,10 @@ export const ChapterVideoForm = ({
       {isEditing && (
         <div>
           <FileUpload
-            endpoint="chapterVideos"
-            onChange={(url) => {
-              if (url) {
-                onSubmit({ videoUrl: url });
-              }
+            contentType="video"
+            maxSize={500}
+            onChange={(data) => {
+              onSubmit({ videoUrl: data.downloadUrl });
             }}
           />
           <div className="flex item-center gap-1 text-xs text-sky-700 mt-4">

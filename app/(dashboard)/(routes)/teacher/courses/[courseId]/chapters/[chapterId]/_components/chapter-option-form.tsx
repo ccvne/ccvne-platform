@@ -3,8 +3,6 @@
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
-import toast from "react-hot-toast";
-import { useRouter } from "next/navigation";
 import { Chapter } from "@prisma/client";
 
 import {
@@ -35,25 +33,18 @@ export const ChapterOptionForm = ({
   courseId,
   chapterId,
 }: ChapterOptionFormProps) => {
-  const router = useRouter();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const onSubmit = async (values: z.infer<typeof formSchema>) => {
-    try {
-      router.refresh();
-    } catch {
-      toast.error("Something Went Wrong");
-    }
-  };
-
   const hasPdfUrlOrVideoUrl = initialData.pdfUrl || initialData.videoUrl;
 
   return (
     <Form {...form}>
-      <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4 mt-6">
+      <div
+        className="space-y-4 mt-6"
+      >
         {!hasPdfUrlOrVideoUrl && (
           <FormField
             control={form.control}
@@ -94,7 +85,7 @@ export const ChapterOptionForm = ({
             You did not select a chapter content type.
           </div>
         )}
-      </form>
+      </div>
     </Form>
   );
 };

@@ -2,7 +2,9 @@
 const nextConfig = {
     images: {
         domains: [
-            "utfs.io"
+            "ap-pdf.club",
+            "www.ap-pdf.club",
+            "troll-popular-openly.ngrok-free.app"
         ]
     }
 }
