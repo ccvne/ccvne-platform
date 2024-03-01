@@ -4,20 +4,18 @@ import * as z from "zod";
 import axios from "axios";
 import api from "@/lib/api";
 import toast from "react-hot-toast";
-import MuxPlayer from "@mux/mux-player-react";
 
 import { Pencil, Plus, Sparkles, Video, X } from "lucide-react";
 import { useState } from "react";
 
 import { useRouter } from "next/navigation";
-import { Chapter, MuxData } from "@prisma/client";
+import { Chapter } from "@prisma/client";
 
 import { Button } from "@/components/ui/button";
 import { FileUpload } from "@/components/file-upload";
 
-
 interface ChapterVideoFormProps {
-  initialData: Chapter & { muxData?: MuxData | null };
+  initialData: Chapter;
   courseId: string;
   chapterId: string;
 }
@@ -40,7 +38,9 @@ export const ChapterVideoForm = ({
   const onSubmit = async (values: z.infer<typeof formSchema>) => {
     try {
       if (initialData.videoUrl) {
-        await api.delete(`/uploads/${initialData.videoUrl.split("/uploads/")[1]}`);
+        await api.delete(
+          `/uploads/${initialData.videoUrl.split("/uploads/")[1]}`
+        );
       }
       await axios.patch(
         `/api/courses/${courseId}/chapters/${chapterId}`,
@@ -82,8 +82,14 @@ export const ChapterVideoForm = ({
             <Video className="h-10 w-10 text-slate-500" />
           </div>
         ) : (
-          <div className="relative aspect-video mt-2">
-            <MuxPlayer playbackId={initialData?.muxData?.playbackId || ""} />
+          <div className="relative aspect-video mt-2 mb-4">
+            <video
+              src={initialData?.videoUrl}
+              title={initialData?.title}
+              className={"w-full h-full rounded-md"}
+              controls
+              controlsList="nodownload"
+            />
           </div>
         ))}
       {isEditing && (

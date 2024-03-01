@@ -1,17 +1,16 @@
 "use client";
 
 import axios from "axios";
-import MuxPlayer from "@mux/mux-player-react";
-import { useState } from "react";
+
+import { useEffect, useState } from "react";
 import { toast } from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Loader2, Lock } from "lucide-react";
-
-import { cn } from "@/lib/utils";
 import { useConfettiStore } from "@/hooks/use-confetti-store";
+import { Chapter } from "@prisma/client";
 
 interface VideoPlayerProps {
-  playbackId: string;
+  chapter: Chapter;
   courseId: string;
   chapterId: string;
   nextChapterId?: string;
@@ -21,7 +20,7 @@ interface VideoPlayerProps {
 }
 
 export const VideoPlayer = ({
-  playbackId,
+  chapter,
   courseId,
   chapterId,
   nextChapterId,
@@ -32,6 +31,14 @@ export const VideoPlayer = ({
   const [isReady, setIsReady] = useState(false);
   const router = useRouter();
   const confetti = useConfettiStore();
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setIsReady(true);
+    }, 1000);
+
+    return () => clearTimeout(timer);
+  }, []);
 
   const onEnd = async () => {
     try {
@@ -72,15 +79,15 @@ export const VideoPlayer = ({
           <p className="text-sm">This Chapter is Locked</p>
         </div>
       )}
-      {!isLocked && (
-        <MuxPlayer
+      {isReady && !isLocked && (
+        <video
+          src={`${chapter.videoUrl!}`}
           title={title}
-          className={cn(!isReady && "hidden")}
-          accentColor="#0369a1"
-          onCanPlay={() => setIsReady(true)}
+          className={"w-full h-full"}
           onEnded={onEnd}
           autoPlay
-          playbackId={playbackId}
+          controls
+          controlsList="nodownload"
         />
       )}
     </div>
