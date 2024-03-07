@@ -49,16 +49,19 @@
     "react-icons": "^4.11.0",
     "react-quill": "^2.0.0",
     "recharts": "^2.9.3",
+    "resend": "^3.2.0",
     "sharp": "^0.33.2",
     "tailwind-merge": "^1.14.0",
     "tailwindcss": "3.3.3",
     "tailwindcss-animate": "^1.0.7",
     "typescript": "5.2.2",
+    "uuid": "^9.0.1",
     "zod": "^3.22.4",
     "zustand": "^4.4.6"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
+    "@types/uuid": "^9.0.8",
     "prisma": "^5.9.1"
   }
 }
