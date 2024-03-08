@@ -8,9 +8,15 @@ import { Button } from "@/components/ui/button";
 import { isTeacher } from "@/lib/teacher";
 
 import { SearchInput } from "./search-input";
+import { ExtendedUser } from "@/next-auth";
+import { UserButton } from "@/components/auth/user-button";
 
-export const NavbarRoutes = () => {
-  const { userId } = useAuth();
+interface NavbarRoutesProps {
+  user?: ExtendedUser;
+}
+
+export const NavbarRoutes = ({user}: NavbarRoutesProps) => {
+  const userId = user?.id;
   const pathname = usePathname();
 
   const isTeacherPage = pathname?.startsWith("/teacher");
@@ -26,7 +32,7 @@ export const NavbarRoutes = () => {
       )}
       <div className="flex gap-x-2 ml-auto">
         {isTeacherPage || isCoursePage ? (
-          <Link href="/">
+          <Link href="/dashboard">
             <Button size="sm" variant="ghost">
               <LogOut className="h-4 w-4 mr-2" />
               Exit
@@ -40,6 +46,7 @@ export const NavbarRoutes = () => {
             </Button>
           </Link>
         ) : null}
+        <UserButton />
       </div>
     </>
   )

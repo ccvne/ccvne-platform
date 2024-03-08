@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@/lib/auth";
 import { Chapter, Course, UserProgress } from "@prisma/client";
 import { redirect } from "next/navigation";
 
@@ -20,10 +20,11 @@ export const CourseSidebar = async ({
   course,
   progressCount,
 }: CourseSidebarProps) => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const userId =  user?.id;
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/login");
   }
 
   const purchase = await db.purchase.findUnique({

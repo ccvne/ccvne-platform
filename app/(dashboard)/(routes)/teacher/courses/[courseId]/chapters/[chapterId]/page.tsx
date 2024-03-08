@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
 import { ArrowLeft, BookPlus, Eye, LayoutList } from "lucide-react";
@@ -18,10 +18,11 @@ const ChapterIdPage = async ({
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const userId =  user?.id;
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/login");
   }
 
   const chapter = await db.chapter.findUnique({
@@ -32,7 +33,7 @@ const ChapterIdPage = async ({
   });
 
   if (!chapter) {
-    return redirect("/");
+    return redirect("/dashboard");
   }
 
   const requiredFields = [chapter.title, chapter.description, chapter.videoUrl || chapter.pdfUrl];

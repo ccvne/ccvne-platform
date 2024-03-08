@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { File, LayoutList, ListChecks, Text } from "lucide-react";
 
@@ -16,10 +16,11 @@ import { Actions } from "./_components/actions";
 import { NotesForm } from "./_components/notes-form";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const userId =  user?.id;
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/login");
   }
 
   const course = await db.course.findUnique({
@@ -48,7 +49,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   });
 
   if (!course) {
-    return redirect("/");
+    return redirect("/dashboard");
   }
 
   const requiredFields = [

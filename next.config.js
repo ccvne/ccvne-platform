@@ -3,8 +3,8 @@ const nextConfig = {
     images: {
         domains: [
             "localhost",
-            "www.ap-pdf.club",
-            "ap-pdf.club"
+            "ap-pdf.club",
+            "api.ap-pdf.club"
         ]
     }
 }

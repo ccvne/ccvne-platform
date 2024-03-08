@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { File } from "lucide-react";
 
@@ -16,10 +16,11 @@ const ChapterIdPage = async ({
 }: {
   params: { courseId: string; chapterId: string };
 }) => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const userId =  user?.id;
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/login");
   }
 
   const {
@@ -36,7 +37,7 @@ const ChapterIdPage = async ({
   });
 
   if (!chapter || !course) {
-    return redirect("/");
+    return redirect("/dashboard");
   }
 
   const isLocked = !chapter.isFree && !purchase;

@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 
 import { db } from "@/lib/db";
@@ -16,11 +16,12 @@ interface SearchPageProps {
 }
 
 const SearchPage = async ({ searchParams }: SearchPageProps) => {
-  const { userId } = auth();
+  const user = await currentUser();
+  const userId =  user?.id;
 
 
   if (!userId) {
-    return redirect("/");
+    return redirect("/auth/login");
   }
 
   const categories = await db.category.findMany({
