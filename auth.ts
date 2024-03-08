@@ -6,12 +6,14 @@ import { db } from "@/lib/db";
 import authConfig from "@/auth.config";
 import { getUserById } from "@/data/user";
 import { getTwoFactorConfirmationByUserId } from "@/data/two-factor-confirmation";
+import { getAccountByUserId } from "./data/account";
 
 export const {
   handlers: { GET, POST },
   auth,
   signIn,
   signOut,
+  update,
 } = NextAuth({
   pages: {
     signIn: "/auth/login",
@@ -29,20 +31,20 @@ export const {
     async signIn({ user, account }) {
       // Allow OAuth without email verification
       if (account?.provider !== "credentials") {
-        return true
-      };
+        return true;
+      }
 
       const existingUser = await getUserById(user.id);
 
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) {
-        return false
-      };
+        return false;
+      }
 
       // Prevent sign in without authorization
       if (!existingUser?.isAuthorized) {
-        return false
-      };
+        return false;
+      }
 
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
@@ -50,8 +52,8 @@ export const {
         );
 
         if (!twoFactorConfirmation) {
-          return false
-        };
+          return false;
+        }
 
         // Delete two factor confirmation for next sign in
         await db.twoFactorConfirmation.delete({
@@ -70,6 +72,16 @@ export const {
         session.user.role = token.role as UserRole;
       }
 
+      if (session.user) {
+        session.user.isTwoFactorEnabled = token.isTwoFactorEnabled as boolean;
+      }
+
+      if (session.user) {
+        session.user.name = token.name;
+        session.user.email = token.email;
+        session.user.isOAuth = token.isOAuth as boolean;
+      }
+
       return session;
     },
     async jwt({ token }) {
@@ -83,7 +95,13 @@ export const {
         return token;
       }
 
+      const existingAccount = await getAccountByUserId(existingUser.id);
+
+      token.isOAuth = !!existingAccount;
+      token.name = existingUser.name;
+      token.email = existingUser.email;
       token.role = existingUser.role;
+      token.isTwoFactorEnabled = existingUser.isTwoFactorEnabled;
 
       return token;
     },
