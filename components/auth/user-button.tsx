@@ -34,13 +34,6 @@ import {
   FormDescription,
   FormMessage,
 } from "@/components/ui/form";
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -51,7 +44,6 @@ import { settings } from "@/actions/auth/settings";
 import { useCurrentUser } from "@/hooks/use-current-user";
 import { FormError } from "@/components/form-error";
 import { FormSuccess } from "@/components/form-success";
-import { UserRole } from "@prisma/client";
 
 export const UserButton = () => {
   const user = useCurrentUser();
@@ -110,7 +102,7 @@ export const UserButton = () => {
             <DialogHeader>
               <DialogTitle>Account Settings</DialogTitle>
               <DialogDescription>
-                Make changes to your account here. Click save when you're done.
+                Make changes to your account here. Click save when you are done.
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>

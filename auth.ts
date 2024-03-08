@@ -13,7 +13,7 @@ export const {
   auth,
   signIn,
   signOut,
-  update,
+  unstable_update,
 } = NextAuth({
   pages: {
     signIn: "/auth/login",
@@ -34,7 +34,7 @@ export const {
         return true;
       }
 
-      const existingUser = await getUserById(user.id);
+      const existingUser = await getUserById(user.id as string);
 
       // Prevent sign in without email verification
       if (!existingUser?.emailVerified) {
@@ -78,7 +78,7 @@ export const {
 
       if (session.user) {
         session.user.name = token.name;
-        session.user.email = token.email;
+        session.user.email = token.email as string;
         session.user.isOAuth = token.isOAuth as boolean;
       }
 
