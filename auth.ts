@@ -39,6 +39,11 @@ export const {
         return false
       };
 
+      // Prevent sign in without authorization
+      if (!existingUser?.isAuthorized) {
+        return false
+      };
+
       if (existingUser.isTwoFactorEnabled) {
         const twoFactorConfirmation = await getTwoFactorConfirmationByUserId(
           existingUser.id

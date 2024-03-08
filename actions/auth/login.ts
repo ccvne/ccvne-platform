@@ -44,6 +44,10 @@ export const login = async (values: z.infer<typeof LoginSchema>) => {
     return { success: "Confirmation email sent!" };
   }
 
+  if (!existingUser.isAuthorized) {
+    return {error: "User not authorized, you need aprovation!"}
+  }
+
   if (existingUser.isTwoFactorEnabled && existingUser.email) {
     if (code) {
       const twoFactorToken = await getTwoFactorTokenByEmail(existingUser.email);
