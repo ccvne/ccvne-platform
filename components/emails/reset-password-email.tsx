@@ -12,13 +12,13 @@ import {
 } from "@react-email/components";
 import * as React from "react";
 
-interface TwoFactorCodeEmailProps {
-  validationCode?: string;
+interface ResetPasswordEmailProps {
+  resetLink?: string;
 }
 
-export const TwoFactorCodeEmail = ({
-  validationCode,
-}: TwoFactorCodeEmailProps) => (
+export const ResetPasswordEmail = ({
+  resetLink,
+}: ResetPasswordEmailProps) => (
   <Html>
     <Head />
     <Preview>
@@ -34,15 +34,15 @@ export const TwoFactorCodeEmail = ({
           style={logo}
         />
         <Heading style={heading}>
-          Your code for Clubes Ciência Viva na Escola
+          Reset Password for Clubes Ciência Viva na Escola
         </Heading>
         <Text style={paragraph}>
-          This code will only be valid for the next 5 minutes. If the code does
+          This reset password link will only be valid for the next 5 minutes. If the link does
           not work, you may request a new one:
         </Text>
-        <code style={code}>{validationCode}</code>
+        <Text>Click <Link href={resetLink}>here</Link> to reset your password.</Text>
         <Text style={text}>
-          If you didn&apos;t try to login, you can safely ignore this email.
+          If you didn&apos;t perform this password change, please reset your account password immediately.
         </Text>
         <Hr style={hr} />
         <Text style={text}>
@@ -56,7 +56,7 @@ export const TwoFactorCodeEmail = ({
   </Html>
 );
 
-export default TwoFactorCodeEmail;
+export default ResetPasswordEmail;
 
 const logo = {
   width: 180,
@@ -99,17 +99,6 @@ const link = {
 const hr = {
   borderColor: "#dfe1e4",
   margin: "36px 0 26px",
-};
-
-const code = {
-  fontFamily: "monospace",
-  fontWeight: "700",
-  padding: "1px 4px",
-  backgroundColor: "#dfe1e4",
-  letterSpacing: "-0.3px",
-  fontSize: "21px",
-  borderRadius: "4px",
-  color: "#3c4149",
 };
 
 const text = {

@@ -10,14 +10,19 @@ interface HeaderProps {
 export const Header = ({ label, description, href }: HeaderProps) => {
   const pathname = usePathname();
 
-  console.log(pathname)
-
   let linkText = "";
 
   if (pathname === "/auth/login") {
     linkText = "Sign up.";
   } else if (pathname === "/auth/register") {
     linkText = "Sign in.";
+  } else if (
+    pathname === "/auth/reset" ||
+    pathname === "/auth/new-password" ||
+    pathname === "/auth/new-verification" ||
+    pathname === "/auth/error"
+  ) {
+    linkText = "Back to login.";
   }
 
   return (

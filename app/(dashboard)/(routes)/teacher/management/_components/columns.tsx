@@ -23,7 +23,7 @@ interface ActionsCellProps {
 const ActionsCell: React.FC<ActionsCellProps> = ({ row }) => {
   const router = useRouter();
 
-  const { id, isAuthorized } = row.original;
+  const { id, isAuthorized, email } = row.original;
   const onClick = async () => {
     try {
       let response;
