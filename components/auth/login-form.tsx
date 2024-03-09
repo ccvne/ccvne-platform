@@ -78,9 +78,9 @@ export const LoginForm = () => {
 
   return (
     <CardWrapper
-      headerLabel="Welcome back"
-      backButtonLabel="Don't have an account?"
-      backButtonHref="/auth/register"
+      headerLabel="Welcome back!"
+      headerDescription="Don't have an account?"
+      headerHref="/auth/register"
       showSocial
     >
       <Form {...form}>
@@ -105,7 +105,7 @@ export const LoginForm = () => {
                         {...field}
                       />
                     </FormControl>
-                    <FormDescription>
+                    <FormDescription className="text-center">
                       Please enter the one-time password sent to your email.
                     </FormDescription>
                     <FormMessage />
@@ -164,8 +164,8 @@ export const LoginForm = () => {
           </div>
           <FormError message={error || urlError} />
           <FormSuccess message={success} />
-          <Button disabled={isPending} type="submit" className="w-full">
-            {showTwoFactor ? "Confirm" : "Login"}
+          <Button variant="outline" disabled={isPending} type="submit" className="w-full">
+            {showTwoFactor ? "Confirm Authentication Code" : "Login to your Account"}
           </Button>
         </form>
       </Form>

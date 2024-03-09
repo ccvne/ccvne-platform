@@ -1,3 +1,4 @@
+import { TwoFactorCodeEmail } from '@/components/emails/two-factor-code-email';
 import { Resend } from "resend";
 
 const resend = new Resend(process.env.RESEND_API_KEY);
@@ -9,10 +10,10 @@ export const sendTwoFactorTokenEmail = async (
   token: string
 ) => {
   await resend.emails.send({
-    from: "onboarding@ap-pdf.club",
+    from: "Clubes Ciência Viva na Escola <no-reply@ap-pdf.club>",
     to: email,
-    subject: "2FA Code",
-    html: `<p>Your 2FA code: ${token}</p>`
+    subject: "Your Two Factor Authentication Code",
+    react: TwoFactorCodeEmail({ validationCode: token }),
   });
 };
 
@@ -23,9 +24,9 @@ export const sendPasswordResetEmail = async (
   const resetLink = `${domain}/auth/new-password?token=${token}`
 
   await resend.emails.send({
-    from: "onboarding@ap-pdf.club",
+    from: "Clubes Ciência Viva na Escola <no-reply@ap-pdf.club>",
     to: email,
-    subject: "Reset your password",
+    subject: "Reset Your Password",
     html: `<p>Click <a href="${resetLink}">here</a> to reset password.</p>`
   });
 };
@@ -37,9 +38,9 @@ export const sendVerificationEmail = async (
   const confirmLink = `${domain}/auth/new-verification?token=${token}`;
 
   await resend.emails.send({
-    from: "onboarding@ap-pdf.club",
+    from: "Clubes Ciência Viva na Escola <no-reply@ap-pdf.club>",
     to: email,
-    subject: "Confirm your email",
+    subject: "Email Confirmation",
     html: `<p>Click <a href="${confirmLink}">here</a> to confirm email.</p>`
   });
 };
