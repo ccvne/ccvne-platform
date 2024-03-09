@@ -13,6 +13,8 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
@@ -92,17 +94,38 @@ export const UserButton = () => {
           </AvatarFallback>
         </Avatar>
       </DropdownMenuTrigger>
-      <DropdownMenuContent className="w-40" align="end">
+      <DropdownMenuContent className="w-[17.5rem]" align="end">
+        <DropdownMenuLabel className="font-normal p-2">
+          <div className="flex flex-col space-y-1">
+            <p className="text-sm font-semibold leading-none">{user?.name}</p>
+            <p className="text-xs leading-none text-muted-foreground">
+              {user?.email}
+            </p>
+          </div>
+        </DropdownMenuLabel>
+        <DropdownMenuSeparator />
         <Dialog>
-          <DialogTrigger className="flex items-center w-full p-1.5 text-sm rounded-sm hover:bg-muted">
+          <DialogTrigger className="flex items-center w-full p-2 text-sm rounded-sm hover:bg-muted">
             <Settings className="h-4 w-4 mr-2" />
             Settings
           </DialogTrigger>
           <DialogContent className="sm:max-w-[425px]">
             <DialogHeader>
-              <DialogTitle>Account Settings</DialogTitle>
               <DialogDescription>
-                Make changes to your account here. Click save when you are done.
+                <div className="flex items-center gap-x-3">
+                    <Avatar className="w-8 h-8">
+                      <AvatarImage src={user?.image || ""} />
+                      <AvatarFallback className="bg-sky-500">
+                        <FaUser className="text-white" />
+                      </AvatarFallback>
+                    </Avatar>
+                  <div>
+                    <p className="font-medium text-black">{user?.name}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {user?.email}
+                    </p>
+                  </div>
+                </div>
               </DialogDescription>
             </DialogHeader>
             <Form {...form}>
@@ -222,9 +245,9 @@ export const UserButton = () => {
           </DialogContent>
         </Dialog>
         <LogoutButton>
-          <DropdownMenuItem>
+          <DropdownMenuItem className="p-2">
             <LogOut className="h-4 w-4 mr-2" />
-            Logout
+            Log out
           </DropdownMenuItem>
         </LogoutButton>
       </DropdownMenuContent>
