@@ -43,7 +43,7 @@ export const SidebarRoutes = () => {
   const routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
   return (
-    <div className="flex flex-col w-full space-y-1.5 p-3">
+    <div className="flex flex-col w-full space-y-1.5 p-3 mt-3">
       {routes.map((route) => (
         <SidebarItem
           key={route.href}

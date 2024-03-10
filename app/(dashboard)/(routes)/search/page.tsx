@@ -36,7 +36,7 @@ const SearchPage = async ({ searchParams }: SearchPageProps) => {
   });
 
   return (
-    <div className="max-w-screen-2xl mx-auto">
+    <div className="max-w-screen-2xl">
       <div className="px-6 pt-6 md:hidden md:mb-0 block">
         <SearchInput />
       </div>
