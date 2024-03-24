@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -27,7 +28,9 @@ export const Header = ({ label, description, href }: HeaderProps) => {
 
   return (
     <div className="flex flex-col w-full space-y-3 border-b border-gray-200 bg-white p-6">
-      <h1 className="font-bold text-2xl">{label}</h1>
+      <Link href="/auth/login">
+      <Image src="/logo.png" alt="logo" width={100} height={100} className="w-[10rem] mb-2"/>
+      </Link>
       <p className="text-sm text-muted-foreground">
         {description}
         <Link className="ml-1 font-semibold" href={href}>
