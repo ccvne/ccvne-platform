@@ -12,8 +12,6 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import Link from "next/link";
-import { PlusCircle } from "lucide-react";
 
 import {
   Table,
@@ -64,7 +62,7 @@ export function DataTable<TData, TValue>({
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
           }
-          className="max-w-[18rem] md:max-w-sm"
+          className="w-full md:max-w-sm"
         />
       </div>
       <div className="rounded-md border">

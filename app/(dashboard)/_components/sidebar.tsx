@@ -2,9 +2,12 @@ import Link from "next/link";
 import Image  from "next/image";
 
 import { SidebarRoutes } from "./sidebar-routes";
-import { Lightbulb } from "lucide-react";
+import { currentUser } from "@/lib/auth";
 
-export const Sidebar = () => {
+export const Sidebar = async () => {
+  const user = await currentUser();
+  const isAdmin = user?.role === "ADMIN";
+
   return (
     <div className="h-full border-r flex flex-col overflow-y-auto bg-white shadow-sm">
       <div className="flex items-center justify-start h-[80px] px-5 border-b">
@@ -23,7 +26,7 @@ export const Sidebar = () => {
         </Link>
       </div>
       <div className="flex flex-col w-full">
-        <SidebarRoutes />
+        <SidebarRoutes isAdmin={isAdmin} />
       </div>
     </div>
   );

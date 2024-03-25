@@ -24,7 +24,6 @@ import {
   DialogDescription,
   DialogFooter,
   DialogHeader,
-  DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
 import {
@@ -119,7 +118,7 @@ export const UserButton = () => {
                         <FaUser className="text-white" />
                       </AvatarFallback>
                     </Avatar>
-                  <div>
+                  <div className="text-start">
                     <p className="font-medium text-black">{user?.name}</p>
                     <p className="text-xs text-muted-foreground">
                       {user?.email}

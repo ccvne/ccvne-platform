@@ -4,6 +4,10 @@ import { BarChart, Compass, Layout, List, Shield } from "lucide-react";
 import { SidebarItem } from "./sidebar-item";
 import { usePathname } from "next/navigation";
 
+interface SidebarRoutesProps {
+  isAdmin: boolean;
+}
+
 const guestRoutes = [
   {
     icon: Layout,
@@ -28,6 +32,9 @@ const teacherRoutes = [
     label: "Analytics",
     href: "/teacher/analytics",
   },
+];
+
+const adminRoutes = [
   {
     icon: Shield,
     label: "Management",
@@ -35,12 +42,18 @@ const teacherRoutes = [
   },
 ];
 
-export const SidebarRoutes = () => {
+export const SidebarRoutes = ({ isAdmin }: SidebarRoutesProps) => {
   const pathname = usePathname();
+
+  console.log(isAdmin);
 
   const isTeacherPage = pathname?.includes("/teacher");
 
-  const routes = isTeacherPage ? teacherRoutes : guestRoutes;
+  let routes = isTeacherPage ? teacherRoutes : guestRoutes;
+
+  if (isAdmin) {
+    routes = [...routes, ...adminRoutes];
+  }
 
   return (
     <div className="flex flex-col w-full space-y-1.5 p-3 mt-3">
