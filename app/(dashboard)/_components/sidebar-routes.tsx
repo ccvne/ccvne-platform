@@ -51,7 +51,7 @@ export const SidebarRoutes = ({ isAdmin }: SidebarRoutesProps) => {
 
   let routes = isTeacherPage ? teacherRoutes : guestRoutes;
 
-  if (isAdmin) {
+  if (isAdmin && isTeacherPage) {
     routes = [...routes, ...adminRoutes];
   }
 
