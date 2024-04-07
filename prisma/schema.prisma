@@ -139,12 +139,27 @@ model Chapter {
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
+  activities Activity[]
   userProgress UserProgress[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
   @@index([courseId])
+}
+
+model Activity {
+  id          String       @id @default(uuid())
+  name        String
+  url         String       @db.Text
+
+  chapterId   String       
+  chapter     Chapter      @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([chapterId])
 }
 
 model UserProgress {

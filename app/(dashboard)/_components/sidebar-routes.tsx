@@ -44,9 +44,6 @@ const adminRoutes = [
 
 export const SidebarRoutes = ({ isAdmin }: SidebarRoutesProps) => {
   const pathname = usePathname();
-
-  console.log(isAdmin);
-
   const isTeacherPage = pathname?.includes("/teacher");
 
   let routes = isTeacherPage ? teacherRoutes : guestRoutes;

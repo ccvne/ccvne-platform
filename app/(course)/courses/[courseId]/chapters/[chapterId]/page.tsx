@@ -27,6 +27,7 @@ const ChapterIdPage = async ({
     chapter,
     course,
     attachments,
+    activities,
     nextChapter,
     userProgress,
     purchase,
@@ -96,6 +97,26 @@ const ChapterIdPage = async ({
           </div>
           <div className="border rounded-md p-4 mt-4">
             <Preview value={chapter.description!} />
+          </div>
+          <div className="border rounded-md p-4 mt-4">
+            <h1 className="text-lg font-semibold">Chapter Activites & Exercices</h1>
+            {!!activities.length && (
+            <>
+              <div className="flex flex-col gap-2 py-2">
+                {activities.map((activity) => (
+                  <a
+                    href={activity.url}
+                    target="_blank"
+                    key={activity.id}
+                    className="flex items-center gap-1 p-3 w-full bg-sky-200 border text-sky-700 rounded-md hover:underline"
+                  >
+                    <File />
+                    <p className="line-clamp-1">{activity.name}</p>
+                  </a>
+                ))}
+              </div>
+            </>
+          )}
           </div>
           {!!attachments.length && (
             <>

@@ -54,7 +54,7 @@ export const ChapterPdfForm = ({
   return (
     <div className="mt-6 border bg-slate-100 rounded-md p-4">
       <div className="font-medium flex items-center justify-between mb-2">
-        Course Portable Document Format
+        Chapter Portable Document Format
         <Button onClick={toggleEdit} variant="ghost" className="h-7 w-7">
           {isEditing && (
             <div className="flex items-center p-1 border border-red-500 rounded-md">

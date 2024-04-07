@@ -1,7 +1,7 @@
 import { currentUser } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import Link from "next/link";
-import { ArrowLeft, BookPlus, Eye, LayoutList } from "lucide-react";
+import { ArrowLeft, Eye, LayoutList, Library } from "lucide-react";
 
 import { db } from "@/lib/db";
 import { IconBadge } from "@/components/icon-badge";
@@ -12,6 +12,7 @@ import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { ChapterOptionForm } from "./_components/chapter-option-form";
+import { ChapterActivitiesForm } from "./_components/chapter-activities-form";
 
 const ChapterIdPage = async ({
   params,
@@ -19,7 +20,7 @@ const ChapterIdPage = async ({
   params: { courseId: string; chapterId: string };
 }) => {
   const user = await currentUser();
-  const userId =  user?.id;
+  const userId = user?.id;
 
   if (!userId) {
     return redirect("/auth/login");
@@ -29,14 +30,25 @@ const ChapterIdPage = async ({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
-    }
+    },
+    include: {
+      activities: {
+        orderBy: {
+          createdAt: "desc",
+        },
+      },
+    },
   });
 
   if (!chapter) {
     return redirect("/dashboard");
   }
 
-  const requiredFields = [chapter.title, chapter.description, chapter.videoUrl || chapter.pdfUrl];
+  const requiredFields = [
+    chapter.title,
+    chapter.description,
+    chapter.videoUrl || chapter.pdfUrl,
+  ];
 
   const totalFields = requiredFields.length;
   const completedFields = requiredFields.filter(Boolean).length;
@@ -109,16 +121,23 @@ const ChapterIdPage = async ({
               />
             </div>
           </div>
-          <div>
-            <div className="flex items-center gap-x-2">
-              <IconBadge icon={BookPlus} />
-              <h2 className="text-xl font-medium">Add Chapter Content</h2>
+          <div className="space-y-4">
+            <div>
+              <div className="flex items-center gap-x-2">
+                <IconBadge icon={Library} />
+                <h2 className="text-xl font-medium">Add Chapter Content</h2>
+              </div>
+              <ChapterOptionForm
+                initialData={chapter}
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+              />
+              <ChapterActivitiesForm
+                initialData={chapter}
+                courseId={params.courseId}
+                chapterId={params.chapterId}
+              />
             </div>
-            <ChapterOptionForm
-              initialData={chapter}
-              courseId={params.courseId}
-              chapterId={params.chapterId}
-            />
           </div>
         </div>
       </div>
