@@ -25,7 +25,7 @@ export const CardWrapper = ({
   showSocial,
 }: CardWrapperProps) => {
   return (
-    <Card className="relative z-10 w-full max-w-md overflow-hidden border-y border-gray-200 sm:rounded-2xl sm:border sm:shadow-xl">
+    <Card className="relative z-10 w-full max-w-md overflow-hidden border-y border-slate-200 sm:rounded-2xl sm:border sm:shadow-xl">
       <CardHeader className="p-0">
         <Header
           label={headerLabel}
@@ -33,14 +33,14 @@ export const CardWrapper = ({
           href={headerHref}
         />
       </CardHeader>
-      <CardContent className="bg-gray-50 p-6">{children}</CardContent>
+      <CardContent className="bg-slate-50 p-6">{children}</CardContent>
       {/*
       {showSocial && (
-        <CardFooter className="flex flex-col gap-4 bg-gray-50">
+        <CardFooter className="flex flex-col gap-4 bg-slate-50">
           <div className="flex items-center w-full justify-center gap-4">
-            <div className="w-full h-0.5 bg-gray-300" />
+            <div className="w-full h-0.5 bg-slate-300" />
             <span className="text-sm text-muted-foreground">or</span>
-            <div className="w-full h-0.5 bg-gray-300" />
+            <div className="w-full h-0.5 bg-slate-300" />
           </div>
           <Social />
         </CardFooter>

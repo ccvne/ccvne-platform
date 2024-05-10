@@ -14,6 +14,7 @@ import { AttachmentForm } from "./_components/attachment-form";
 import { ChaptersForm } from "./_components/chapters-form";
 import { Actions } from "./_components/actions";
 import { NotesForm } from "./_components/notes-form";
+import { TagsForm } from "./_components/tags-form";
 
 const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
   const user = await currentUser();
@@ -39,10 +40,30 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
           createdAt: "desc",
         },
       },
+      tags: true,
     },
   });
 
   const categories = await db.category.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  });
+
+  const tags = await db.tag.findMany({
+    orderBy: {
+      name: "asc",
+    },
+  })
+
+  const courseTags = await db.tag.findMany({
+    where: {
+      courses: {
+        some: {
+          id: params.courseId,
+        },
+      },
+    },
     orderBy: {
       name: "asc",
     },
@@ -103,6 +124,7 @@ const CourseIdPage = async ({ params }: { params: { courseId: string } }) => {
                 value: category.id,
               }))}
             />
+            <TagsForm initialData={course} courseId={course.id} courseTags={courseTags} tags={tags} />
           </div>
           <div className="space-y-6">
             <div>

@@ -12,7 +12,6 @@ import { ChapterDescriptionForm } from "./_components/chapter-description-form";
 import { ChapterAccessForm } from "./_components/chapter-access-form";
 import { ChapterActions } from "./_components/chapter-actions";
 import { ChapterOptionForm } from "./_components/chapter-option-form";
-import { ChapterActivitiesForm } from "./_components/chapter-activities-form";
 
 const ChapterIdPage = async ({
   params,
@@ -30,14 +29,7 @@ const ChapterIdPage = async ({
     where: {
       id: params.chapterId,
       courseId: params.courseId,
-    },
-    include: {
-      activities: {
-        orderBy: {
-          createdAt: "desc",
-        },
-      },
-    },
+    }
   });
 
   if (!chapter) {
@@ -128,11 +120,6 @@ const ChapterIdPage = async ({
                 <h2 className="text-xl font-medium">Add Chapter Content</h2>
               </div>
               <ChapterOptionForm
-                initialData={chapter}
-                courseId={params.courseId}
-                chapterId={params.chapterId}
-              />
-              <ChapterActivitiesForm
                 initialData={chapter}
                 courseId={params.courseId}
                 chapterId={params.chapterId}

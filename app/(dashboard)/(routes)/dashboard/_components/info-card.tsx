@@ -20,7 +20,7 @@ export const InfoCard = ({
       <IconBadge variant={variant} icon={Icon} />
       <div>
         <p className="font-medium">{label}</p>
-        <p className="text-gray-500 text-sm">
+        <p className="text-slate-500 text-sm">
           {numberOfItems} {numberOfItems === 1 ? "Course" : "Courses"}
         </p>
       </div>

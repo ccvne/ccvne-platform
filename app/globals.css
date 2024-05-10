@@ -101,3 +101,7 @@ body,
 ::-webkit-scrollbar-thumb:hover {
   background: #555;
 }
+
+.ql-editor {
+  padding: 0 0 !important;
+}

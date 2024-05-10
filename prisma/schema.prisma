@@ -89,12 +89,15 @@ model Course {
   title       String  @db.Text
   description String? @db.Text
   imageUrl    String? @db.Text
-  isPublished Boolean @default(false)
   notes       String? @db.Text
+
+  isPublished Boolean @default(false)
 
   categoryId String?
   category   Category? @relation(fields: [categoryId], references: [id])
 
+  tags        Tag[]
+  
   chapters    Chapter[]
   attachments Attachment[]
   purchases   Purchase[]
@@ -110,6 +113,12 @@ model Category {
   id      String   @id @default(uuid())
   name    String   @unique
   courses Course[]
+}
+
+model Tag {
+  id          String  @id @default(uuid())
+  name        String  @unique
+  courses     Course[]
 }
 
 model Attachment {
@@ -139,7 +148,7 @@ model Chapter {
   courseId String
   course   Course @relation(fields: [courseId], references: [id], onDelete: Cascade)
 
-  activities Activity[]
+  evaluations  Evaluation[]
   userProgress UserProgress[]
 
   createdAt DateTime @default(now())
@@ -148,17 +157,19 @@ model Chapter {
   @@index([courseId])
 }
 
-model Activity {
-  id          String       @id @default(uuid())
-  name        String
-  url         String       @db.Text
+model Evaluation {
+  id      String @id @default(uuid())
+  userId  String
+  rating  Int
+  tags    String
+  comment String
 
-  chapterId   String       
-  chapter     Chapter      @relation(fields: [chapterId], references: [id], onDelete: Cascade)
+  chapterId String
+  chapter   Chapter @relation(fields: [chapterId], references: [id], onDelete: Cascade)
 
-  createdAt   DateTime     @default(now())
-  updatedAt   DateTime     @updatedAt
+  createdAt DateTime @default(now())
 
+  @@unique([userId, chapterId])
   @@index([chapterId])
 }
 

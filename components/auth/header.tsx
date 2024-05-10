@@ -27,7 +27,7 @@ export const Header = ({ label, description, href }: HeaderProps) => {
   }
 
   return (
-    <div className="flex flex-col w-full space-y-3 border-b border-gray-200 bg-white p-6">
+    <div className="flex flex-col w-full space-y-3 border-b border-slate-200 bg-white p-6">
       <Link href="/auth/login">
       <Image src="/logo.png" alt="logo" width={100} height={100} className="w-[10rem] mb-2"/>
       </Link>

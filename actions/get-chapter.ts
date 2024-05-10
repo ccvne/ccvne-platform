@@ -1,11 +1,11 @@
 import { db } from "@/lib/db";
-import { Activity, Attachment, Chapter } from "@prisma/client";
+import { Attachment, Chapter, Tag } from "@prisma/client";
 
 interface GetChapterProps {
   userId: string;
   courseId: string;
   chapterId: string;
-};
+}
 
 export const getChapter = async ({
   userId,
@@ -13,13 +13,19 @@ export const getChapter = async ({
   chapterId,
 }: GetChapterProps) => {
   try {
+    const courseOwner = await db.user.findUnique({
+      where: {
+        id: userId,
+      },
+    });
+
     const purchase = await db.purchase.findUnique({
       where: {
         userId_courseId: {
           userId,
           courseId,
-        }
-      }
+        },
+      },
     });
 
     const course = await db.course.findUnique({
@@ -33,9 +39,6 @@ export const getChapter = async ({
       where: {
         id: chapterId,
         isPublished: true,
-      }, 
-      include: {
-        activities: true,
       },
     });
 
@@ -43,21 +46,27 @@ export const getChapter = async ({
       throw new Error("Chapter or Course Not Found.");
     }
 
+    let tags: Tag[] = [];
+
+    tags = await db.tag.findMany({
+      where: {
+        courses: {
+          some: {
+            id: courseId,
+          },
+        },
+      },
+    });
+
     let attachments: Attachment[] = [];
-    let activities: Activity[] = [];
     let nextChapter: Chapter | null = null;
 
     if (purchase) {
       attachments = await db.attachment.findMany({
         where: {
-          courseId: courseId
-        }
+          courseId: courseId,
+        },
       });
-      activities = await db.activity.findMany({
-        where: {
-          chapterId: chapterId
-        }
-      })
     }
 
     if (chapter.isFree || purchase) {
@@ -67,11 +76,11 @@ export const getChapter = async ({
           isPublished: true,
           position: {
             gt: chapter?.position,
-          }
+          },
         },
         orderBy: {
           position: "asc",
-        }
+        },
       });
     }
 
@@ -80,18 +89,19 @@ export const getChapter = async ({
         userId_chapterId: {
           userId,
           chapterId,
-        }
-      }
+        },
+      },
     });
 
     return {
+      courseOwner,
       chapter,
       course,
       attachments,
-      activities,
       nextChapter,
       userProgress,
       purchase,
+      tags,
     };
   } catch (error) {
     console.log("[GET_CHAPTER]", error);
@@ -99,10 +109,10 @@ export const getChapter = async ({
       chapter: null,
       course: null,
       attachments: [],
-      activities: [],
       nextChapter: null,
       userProgress: null,
       purchase: null,
-    }
+      tags: [],
+    };
   }
-}
+};

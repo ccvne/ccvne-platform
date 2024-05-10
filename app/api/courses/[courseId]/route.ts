@@ -45,13 +45,20 @@ export async function PATCH(
 ) {
   try {
     const user = await currentUser();
-    const userId =  user?.id;
+    const userId = user?.id;
     
     const { courseId } = params;
-    const values = await req.json();
+    const { tagId, ...rest } = await req.json();
 
     if (!userId) {
       return new NextResponse("Unauthorized", { status: 401 });
+    }
+
+    const data: any = { ...rest };
+
+    if (tagId) {
+      const tags = tagId.map((id: string) => ({ id }));
+      data.tags = { set: tags };
     }
 
     const course = await db.course.update({
@@ -59,9 +66,7 @@ export async function PATCH(
         id: courseId,
         userId,
       },
-      data: {
-        ...values,
-      },
+      data,
     });
 
     return NextResponse.json(course);
